@@ -15,7 +15,7 @@ extension ITCoreDataOperationQueue {
         assert(request.sortDescriptors!.count > 0, "NSFetchedResultController requres sort descriptors.")
         assert(request.resultType == .ManagedObjectResultType, "NSFetchedResultController requires NSManagedObject Result Type")
         
-        let controller: NSFetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.readOnlyContext, sectionNameKeyPath: keyPath, cacheName: nil)
+        let controller: NSFetchedResultsController = NSFetchedResultsController(fetchRequest: request, managedObjectContext: self.readOnlyContext!, sectionNameKeyPath: keyPath, cacheName: nil)
         controller.delegate = delegate
         
         do {

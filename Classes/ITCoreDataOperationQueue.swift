@@ -11,12 +11,14 @@ import CoreData
 
 class ITCoreDataOperationQueue: NSObject {
     
-    let model : NSManagedObjectModel
-    let readOnlyContext : NSManagedObjectContext
-    let changesContext : NSManagedObjectContext
-    let loggingLevel : ITLogLevel;
+    var model : NSManagedObjectModel? = nil
+    var readOnlyContext : NSManagedObjectContext? = nil
+    var changesContext : NSManagedObjectContext? = nil
+    let loggingLevel : ITLogLevel = .None
     
     init(model: NSManagedObjectModel!, managedObjectContext: NSManagedObjectContext!, readOnlyObjectContext: NSManagedObjectContext!) {
+        super.init()
+        self.model = model
         self.readOnlyContext = readOnlyObjectContext
         self.changesContext = managedObjectContext
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: nil)
@@ -35,16 +37,16 @@ class ITCoreDataOperationQueue: NSObject {
     //MARK: - Public
     
     func executeMainThreadOperation(mainThreadOperation: (context: NSManagedObjectContext) -> Void) {
-        self.readOnlyContext.performBlock { () -> Void in
-            mainThreadOperation(context: self.readOnlyContext)
+        self.readOnlyContext!.performBlock { () -> Void in
+            mainThreadOperation(context: self.readOnlyContext!)
         }
     }
 
     func executeOperation(operation: (context: NSManagedObjectContext) -> Void) {
-        self.changesContext.performBlock { () -> Void in
-            operation(context: self.changesContext)
+        self.changesContext!.performBlock { () -> Void in
+            operation(context: self.changesContext!)
             do {
-                try self.changesContext.save()
+                try self.changesContext!.save()
             } catch {
                 // TODO: add logging
             }
@@ -63,7 +65,7 @@ class ITCoreDataOperationQueue: NSObject {
                 }
             }
         }
-        var result: NSArray
+        var result: NSArray?
         self.executeOperation { (context) -> Void in
             result = backgroundOperation(context: context)
             if (context.hasChanges) {
@@ -75,14 +77,18 @@ class ITCoreDataOperationQueue: NSObject {
                     return;
                 }
             }
-            if (result.count > 0 && mainThreadOperation != nil) {
-                let objectIDs : NSArray = result.valueForKey("objectID") as! NSArray
+            if (result == nil) {
+                mainThreadOperationBlock(nil)
+                return
+            }
+            if (result!.count > 0 && mainThreadOperation != nil) {
+                let objectIDs : NSArray = result!.valueForKey("objectID") as! NSArray
                 self.executeMainThreadOperation({ (context) -> Void in
-                    let entity: String = (result.firstObject as! NSManagedObject).entity.name!
+                    let entity: String = (result!.firstObject as! NSManagedObject).entity.name!
                     let request: NSFetchRequest = NSFetchRequest(entityName: entity)
                     request.predicate = NSPredicate(format: "SELF IN %@", objectIDs)
                     request.includesSubentities = false
-                    let fetchResult: NSArray
+                    var fetchResult: NSArray? = nil
                     do {
                         fetchResult = try context.executeFetchRequest(request)
                     } catch {
@@ -103,21 +109,21 @@ class ITCoreDataOperationQueue: NSObject {
         if (context.isEqual(self.readOnlyContext)) {
             //TODO: assert
         } else if (context.isEqual(self.changesContext)) {
-            self.readOnlyContext.performBlock({ () -> Void in
-                if (self.readOnlyContext.hasChanges) {
-                    self.readOnlyContext.rollback()
+            self.readOnlyContext!.performBlock({ () -> Void in
+                if (self.readOnlyContext!.hasChanges) {
+                    self.readOnlyContext!.rollback()
                 }
                 let updated: NSArray = (notification.userInfo! as NSDictionary).valueForKey(NSUpdatedObjectsKey) as! NSArray
                 for (obj) in updated {
-                    let mainThreadObject: NSManagedObject
+                    var mainThreadObject: NSManagedObject? = nil
                     do {
-                        mainThreadObject = try self.readOnlyContext.existingObjectWithID((obj as! NSManagedObject).objectID)
+                        mainThreadObject = try self.readOnlyContext!.existingObjectWithID((obj as! NSManagedObject).objectID)
                     } catch {
                         // TODO: add logging
                     }
-                    mainThreadObject.willAccessValueForKey(nil)
+                    mainThreadObject!.willAccessValueForKey(nil)
                 }
-                self.readOnlyContext.mergeChangesFromContextDidSaveNotification(notification)
+                self.readOnlyContext!.mergeChangesFromContextDidSaveNotification(notification)
             })
         }
     }

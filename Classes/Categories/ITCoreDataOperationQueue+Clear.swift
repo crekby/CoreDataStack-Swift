@@ -12,13 +12,13 @@ import CoreData
 extension ITCoreDataOperationQueue {
     
     func clearAllEntities(completion:(() -> Void)?) {
-        self.changesContext.performBlock { () -> Void in
-            let allEntities: NSArray = self.model.entities
+        self.changesContext!.performBlock { () -> Void in
+            let allEntities: NSArray = self.model!.entities
             allEntities.enumerateObjectsUsingBlock({ (entityDescription, idx, stop) -> Void in
                 let request: NSFetchRequest = NSFetchRequest(entityName: entityDescription.name)
                 let results: NSArray
                 do {
-                    results = try self.changesContext.executeFetchRequest(request)
+                    results = try self.changesContext!.executeFetchRequest(request)
                 } catch {
                     //TODO: add logging
                     if (completion != nil) {
@@ -27,11 +27,11 @@ extension ITCoreDataOperationQueue {
                     return
                 }
                 for (object) in results {
-                    self.changesContext.delete(object)
+                    self.changesContext!.delete(object)
                 }
             })
             do {
-                try self.changesContext.save()
+                try self.changesContext!.save()
             } catch {
                 //TODO: add logging
             }
