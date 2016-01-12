@@ -21,7 +21,7 @@ extension ITCoreDataOperationQueue {
         do {
             try controller.performFetch()
         } catch {
-            //TODO: add logging
+            self.logError("Error fetching request: \(request)")
             return nil;
         }
         return controller

@@ -14,7 +14,7 @@ class ITCoreDataOperationQueue: NSObject {
     var model : NSManagedObjectModel? = nil
     var readOnlyContext : NSManagedObjectContext? = nil
     var changesContext : NSManagedObjectContext? = nil
-    let loggingLevel : ITLogLevel = .None
+    var loggingLevel : ITLogLevel = .None
     
     init(model: NSManagedObjectModel!, managedObjectContext: NSManagedObjectContext!, readOnlyObjectContext: NSManagedObjectContext!) {
         super.init()
@@ -48,7 +48,7 @@ class ITCoreDataOperationQueue: NSObject {
             do {
                 try self.changesContext!.save()
             } catch {
-                // TODO: add logging
+                self.logError("Error saving context: \(self.changesContext)")
             }
         }
     }
@@ -72,7 +72,7 @@ class ITCoreDataOperationQueue: NSObject {
                 do {
                     try context.save()
                 } catch {
-                    // TODO: add logging
+                    self.logError("Error saving context: \(context)")
                     mainThreadOperationBlock(nil);
                     return;
                 }
@@ -92,7 +92,7 @@ class ITCoreDataOperationQueue: NSObject {
                     do {
                         fetchResult = try context.executeFetchRequest(request)
                     } catch {
-                        // TODO: add logging
+                        self.logError("Error fetching request: \(request)")
                     }
                     mainThreadOperationBlock(fetchResult)
                 })
@@ -107,7 +107,7 @@ class ITCoreDataOperationQueue: NSObject {
     private func contextDidSave(notification: NSNotification) {
         let context : NSManagedObjectContext = notification.object! as! NSManagedObjectContext
         if (context.isEqual(self.readOnlyContext)) {
-            //TODO: assert
+            assert(false, "Saving read only context is not allowed, use background context")
         } else if (context.isEqual(self.changesContext)) {
             self.readOnlyContext!.performBlock({ () -> Void in
                 if (self.readOnlyContext!.hasChanges) {
@@ -119,7 +119,7 @@ class ITCoreDataOperationQueue: NSObject {
                     do {
                         mainThreadObject = try self.readOnlyContext!.existingObjectWithID((obj as! NSManagedObject).objectID)
                     } catch {
-                        // TODO: add logging
+                        self.logError("Error fetching existing object: \(obj)")
                     }
                     mainThreadObject!.willAccessValueForKey(nil)
                 }

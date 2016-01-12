@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3FB131E71C44E8760056E4DB /* CoreDataStack-Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB131DC1C44E8760056E4DB /* CoreDataStack-Swift.framework */; };
+		3FB131E71C44E8760056E4DB /* CoreDataStack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */; };
 		3FB131EC1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB131EB1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift */; };
 		3FB131F81C44E8F40056E4DB /* CoreDataStack-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB131F71C44E8F40056E4DB /* CoreDataStack-Swift.h */; };
 		3FB1321E1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1321D1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift */; };
@@ -15,6 +15,7 @@
 		3FB132231C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */; };
 		3FB132251C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */; };
 		3FB132271C45193D0056E4DB /* NSManagedObject+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */; };
+		3FB132291C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132281C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +29,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3FB131DC1C44E8760056E4DB /* CoreDataStack-Swift.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "CoreDataStack-Swift.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreDataStack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FB131E11C44E8760056E4DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FB131E61C44E8760056E4DB /* CoreDataStack-SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreDataStack-SwiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FB131EB1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack_SwiftTests.swift; sourceTree = "<group>"; };
@@ -39,6 +40,7 @@
 		3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+Init.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+Init.swift"; sourceTree = SOURCE_ROOT; };
 		3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+NSFRC.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+NSFRC.swift"; sourceTree = SOURCE_ROOT; };
 		3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSManagedObject+Additions.swift"; path = "Classes/Categories/NSManagedObject+Additions.swift"; sourceTree = SOURCE_ROOT; };
+		3FB132281C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+Logging.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+Logging.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,7 +55,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3FB131E71C44E8760056E4DB /* CoreDataStack-Swift.framework in Frameworks */,
+				3FB131E71C44E8760056E4DB /* CoreDataStack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,7 +74,7 @@
 		3FB131DD1C44E8760056E4DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				3FB131DC1C44E8760056E4DB /* CoreDataStack-Swift.framework */,
+				3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */,
 				3FB131E61C44E8760056E4DB /* CoreDataStack-SwiftTests.xctest */,
 			);
 			name = Products;
@@ -112,6 +114,7 @@
 				3FB132201C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift */,
 				3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */,
 				3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */,
+				3FB132281C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift */,
 				3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */,
 			);
 			name = Categories;
@@ -131,9 +134,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		3FB131DB1C44E8760056E4DB /* CoreDataStack-Swift */ = {
+		3FB131DB1C44E8760056E4DB /* CoreDataStack */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 3FB131F01C44E8760056E4DB /* Build configuration list for PBXNativeTarget "CoreDataStack-Swift" */;
+			buildConfigurationList = 3FB131F01C44E8760056E4DB /* Build configuration list for PBXNativeTarget "CoreDataStack" */;
 			buildPhases = (
 				3FB131D71C44E8760056E4DB /* Sources */,
 				3FB131D81C44E8760056E4DB /* Frameworks */,
@@ -144,9 +147,9 @@
 			);
 			dependencies = (
 			);
-			name = "CoreDataStack-Swift";
+			name = CoreDataStack;
 			productName = "CoreDataStack-Swift";
-			productReference = 3FB131DC1C44E8760056E4DB /* CoreDataStack-Swift.framework */;
+			productReference = 3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		3FB131E51C44E8760056E4DB /* CoreDataStack-SwiftTests */ = {
@@ -197,7 +200,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				3FB131DB1C44E8760056E4DB /* CoreDataStack-Swift */,
+				3FB131DB1C44E8760056E4DB /* CoreDataStack */,
 				3FB131E51C44E8760056E4DB /* CoreDataStack-SwiftTests */,
 			);
 		};
@@ -230,6 +233,7 @@
 				3FB132271C45193D0056E4DB /* NSManagedObject+Additions.swift in Sources */,
 				3FB132211C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift in Sources */,
 				3FB132231C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift in Sources */,
+				3FB132291C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,7 +250,7 @@
 /* Begin PBXTargetDependency section */
 		3FB131E91C44E8760056E4DB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 3FB131DB1C44E8760056E4DB /* CoreDataStack-Swift */;
+			target = 3FB131DB1C44E8760056E4DB /* CoreDataStack */;
 			targetProxy = 3FB131E81C44E8760056E4DB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -408,7 +412,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		3FB131F01C44E8760056E4DB /* Build configuration list for PBXNativeTarget "CoreDataStack-Swift" */ = {
+		3FB131F01C44E8760056E4DB /* Build configuration list for PBXNativeTarget "CoreDataStack" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				3FB131F11C44E8760056E4DB /* Debug */,

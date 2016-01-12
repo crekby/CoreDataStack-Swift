@@ -20,7 +20,7 @@ extension ITCoreDataOperationQueue {
                 do {
                     results = try self.changesContext!.executeFetchRequest(request)
                 } catch {
-                    //TODO: add logging
+                    self.logError("Error fetching request: \(request)")
                     if (completion != nil) {
                         completion!()
                     }
@@ -33,7 +33,7 @@ extension ITCoreDataOperationQueue {
             do {
                 try self.changesContext!.save()
             } catch {
-                //TODO: add logging
+                self.logError("Error saving context: \(self.changesContext)")
             }
             if (completion != nil) {
                 completion!()

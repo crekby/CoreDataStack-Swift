@@ -37,13 +37,13 @@ extension ITCoreDataOperationQueue {
         if (exist) {
             let compatible = ITCoreDataOperationQueue.isModelCompatible(model, url: storeURL, storeType: storeType)
             if (!compatible) {
-                //TODO: add logging
+                print("Merge is needed")
             }
         }
         do {
             try persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: self.storeOptions())
         } catch {
-            //TODO: add logging
+            print("Error adding store to coordinator: \(persistentStoreCoordinator)")
         }
         return persistentStoreCoordinator
     }
@@ -65,7 +65,7 @@ extension ITCoreDataOperationQueue {
         do {
             metadata = try NSPersistentStoreCoordinator.metadataForPersistentStoreOfType(storeType, URL: url, options: self.storeOptions())
         } catch {
-            // TODO: add logging
+            print("Error getting metadata for store with url: \(url)")
             return false
         }
         
