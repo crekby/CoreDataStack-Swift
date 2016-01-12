@@ -104,7 +104,7 @@ class ITCoreDataOperationQueue: NSObject {
     
     //MARK: - Notifications
     
-    private func contextDidSave(notification: NSNotification) {
+    @objc private func contextDidSave(notification: NSNotification) {
         let context : NSManagedObjectContext = notification.object! as! NSManagedObjectContext
         if (context.isEqual(self.readOnlyContext)) {
             assert(false, "Saving read only context is not allowed, use background context")
@@ -113,15 +113,17 @@ class ITCoreDataOperationQueue: NSObject {
                 if (self.readOnlyContext!.hasChanges) {
                     self.readOnlyContext!.rollback()
                 }
-                let updated: NSArray = (notification.userInfo! as NSDictionary).valueForKey(NSUpdatedObjectsKey) as! NSArray
-                for (obj) in updated {
-                    var mainThreadObject: NSManagedObject? = nil
-                    do {
-                        mainThreadObject = try self.readOnlyContext!.existingObjectWithID((obj as! NSManagedObject).objectID)
-                    } catch {
-                        self.logError("Error fetching existing object: \(obj)")
+                let updated: NSArray? = (notification.userInfo! as NSDictionary).valueForKey(NSUpdatedObjectsKey) as? NSArray
+                if (updated != nil) {
+                    for (obj) in updated! {
+                        var mainThreadObject: NSManagedObject? = nil
+                        do {
+                            mainThreadObject = try self.readOnlyContext!.existingObjectWithID((obj as! NSManagedObject).objectID)
+                        } catch {
+                            self.logError("Error fetching existing object: \(obj)")
+                        }
+                        mainThreadObject!.willAccessValueForKey(nil)
                     }
-                    mainThreadObject!.willAccessValueForKey(nil)
                 }
                 self.readOnlyContext!.mergeChangesFromContextDidSaveNotification(notification)
             })

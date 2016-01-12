@@ -16,6 +16,9 @@
 		3FB132251C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */; };
 		3FB132271C45193D0056E4DB /* NSManagedObject+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */; };
 		3FB132291C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132281C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift */; };
+		3FB1322F1C4531DE0056E4DB /* TestModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1322D1C4531DE0056E4DB /* TestModel.xcdatamodeld */; };
+		3FB132321C4532120056E4DB /* TestEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132301C4532120056E4DB /* TestEntity+CoreDataProperties.swift */; };
+		3FB132331C4532120056E4DB /* TestEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132311C4532120056E4DB /* TestEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,6 +44,9 @@
 		3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+NSFRC.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+NSFRC.swift"; sourceTree = SOURCE_ROOT; };
 		3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSManagedObject+Additions.swift"; path = "Classes/Categories/NSManagedObject+Additions.swift"; sourceTree = SOURCE_ROOT; };
 		3FB132281C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+Logging.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+Logging.swift"; sourceTree = SOURCE_ROOT; };
+		3FB1322E1C4531DE0056E4DB /* TestModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestModel.xcdatamodel; sourceTree = "<group>"; };
+		3FB132301C4532120056E4DB /* TestEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TestEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		3FB132311C4532120056E4DB /* TestEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +99,7 @@
 		3FB131EA1C44E8760056E4DB /* CoreDataStack-SwiftTests */ = {
 			isa = PBXGroup;
 			children = (
+				3FB1322C1C4531C90056E4DB /* TestModel */,
 				3FB131EB1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift */,
 				3FB131ED1C44E8760056E4DB /* Info.plist */,
 			);
@@ -118,6 +125,16 @@
 				3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		3FB1322C1C4531C90056E4DB /* TestModel */ = {
+			isa = PBXGroup;
+			children = (
+				3FB132301C4532120056E4DB /* TestEntity+CoreDataProperties.swift */,
+				3FB132311C4532120056E4DB /* TestEntity.swift */,
+				3FB1322D1C4531DE0056E4DB /* TestModel.xcdatamodeld */,
+			);
+			name = TestModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,7 +258,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FB132331C4532120056E4DB /* TestEntity.swift in Sources */,
 				3FB131EC1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift in Sources */,
+				3FB132321C4532120056E4DB /* TestEntity+CoreDataProperties.swift in Sources */,
+				3FB1322F1C4531DE0056E4DB /* TestModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,6 +451,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		3FB1322D1C4531DE0056E4DB /* TestModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				3FB1322E1C4531DE0056E4DB /* TestModel.xcdatamodel */,
+			);
+			currentVersion = 3FB1322E1C4531DE0056E4DB /* TestModel.xcdatamodel */;
+			path = TestModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 3FB131D31C44E8760056E4DB /* Project object */;
 }

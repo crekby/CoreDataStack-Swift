@@ -7,30 +7,36 @@
 //
 
 import XCTest
-@testable import CoreDataStack_Swift
+import CoreData
+@testable import CoreDataStack
 
 class CoreDataStack_SwiftTests: XCTestCase {
     
+    var databaseQueue: ITCoreDataOperationQueue!
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let storeName: String = NSStringFromSelector(self.invocation!.selector)
+        let modelURL = NSBundle(forClass: CoreDataStack_SwiftTests.self).URLForResource("TestModel", withExtension: "momd")
+        self.databaseQueue = ITCoreDataOperationQueue(model: NSManagedObjectModel(contentsOfURL: modelURL!)!, storeName: storeName, storeType: NSInMemoryStoreType)
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measureBlock {
-            // Put the code you want to measure the time of here.
+
+    func testThatBackroundContextReturnObjectInMainContext() {
+        let expextation: XCTestExpectation = self.expectationWithDescription("Wait expectation")
+        self.databaseQueue.executeOperation({ (context) -> NSArray in
+            let object: TestEntity = NSEntityDescription.insertNewObjectForEntityForName("TestEntity", inManagedObjectContext: context) as! TestEntity
+            return [object]
+        }) { (result) -> Void in
+            let object: TestEntity = result!.firstObject as! TestEntity;
+            XCTAssertNotNil(object);
+            XCTAssert(object.managedObjectContext!.concurrencyType == .MainQueueConcurrencyType, "returned object is not in main context");
+            expextation.fulfill()
         }
+        self.waitForExpectationsWithTimeout(5, handler: nil)
     }
-    
 }
