@@ -10,6 +10,7 @@
 		3FB131E71C44E8760056E4DB /* CoreDataStack-Swift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB131DC1C44E8760056E4DB /* CoreDataStack-Swift.framework */; };
 		3FB131EC1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB131EB1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift */; };
 		3FB131F81C44E8F40056E4DB /* CoreDataStack-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB131F71C44E8F40056E4DB /* CoreDataStack-Swift.h */; };
+		3FB1321E1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1321D1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +30,7 @@
 		3FB131EB1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataStack_SwiftTests.swift; sourceTree = "<group>"; };
 		3FB131ED1C44E8760056E4DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FB131F71C44E8F40056E4DB /* CoreDataStack-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CoreDataStack-Swift.h"; path = "Classes/CoreDataStack-Swift.h"; sourceTree = SOURCE_ROOT; };
+		3FB1321D1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ITCoreDataOperationQueue.swift; path = Classes/ITCoreDataOperationQueue.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,6 +73,7 @@
 		3FB131DE1C44E8760056E4DB /* CoreDataStack-Swift */ = {
 			isa = PBXGroup;
 			children = (
+				3FB131F71C44E8F40056E4DB /* CoreDataStack-Swift.h */,
 				3FB131F61C44E8E00056E4DB /* Classes */,
 				3FB131E11C44E8760056E4DB /* Info.plist */,
 			);
@@ -89,7 +92,7 @@
 		3FB131F61C44E8E00056E4DB /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				3FB131F71C44E8F40056E4DB /* CoreDataStack-Swift.h */,
+				3FB1321D1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -202,6 +205,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3FB1321E1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,6 +320,7 @@
 		3FB131F11C44E8760056E4DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -326,12 +331,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "by.crekby.CoreDataStack-Swift";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		3FB131F21C44E8760056E4DB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
