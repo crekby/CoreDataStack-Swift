@@ -14,6 +14,7 @@
 		3FB132211C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132201C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift */; };
 		3FB132231C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */; };
 		3FB132251C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */; };
+		3FB132271C45193D0056E4DB /* NSManagedObject+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		3FB132201C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+Clear.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+Clear.swift"; sourceTree = SOURCE_ROOT; };
 		3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+Init.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+Init.swift"; sourceTree = SOURCE_ROOT; };
 		3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ITCoreDataOperationQueue+NSFRC.swift"; path = "Classes/Categories/ITCoreDataOperationQueue+NSFRC.swift"; sourceTree = SOURCE_ROOT; };
+		3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSManagedObject+Additions.swift"; path = "Classes/Categories/NSManagedObject+Additions.swift"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 				3FB132201C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift */,
 				3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */,
 				3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */,
+				3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -224,6 +227,7 @@
 			files = (
 				3FB132251C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift in Sources */,
 				3FB1321E1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift in Sources */,
+				3FB132271C45193D0056E4DB /* NSManagedObject+Additions.swift in Sources */,
 				3FB132211C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift in Sources */,
 				3FB132231C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift in Sources */,
 			);
