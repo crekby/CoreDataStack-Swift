@@ -11,7 +11,7 @@ import CoreData
 
 extension ITCoreDataOperationQueue {
     
-    func newController(request: NSFetchRequest, keyPath: String?, delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController? {
+    public func newController(request: NSFetchRequest, keyPath: String?, delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController? {
         assert(request.sortDescriptors!.count > 0, "NSFetchedResultController requres sort descriptors.")
         assert(request.resultType == .ManagedObjectResultType, "NSFetchedResultController requires NSManagedObject Result Type")
         
@@ -27,7 +27,7 @@ extension ITCoreDataOperationQueue {
         return controller
     }
 
-    func newController(request: NSFetchRequest, delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController? {
+    public func newController(request: NSFetchRequest, delegate: NSFetchedResultsControllerDelegate?) -> NSFetchedResultsController? {
         return self.newController(request, keyPath: nil, delegate: delegate)
     }
     

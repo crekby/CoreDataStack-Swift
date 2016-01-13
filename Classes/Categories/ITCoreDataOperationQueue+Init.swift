@@ -11,7 +11,7 @@ import CoreData
 
 extension ITCoreDataOperationQueue {
     
-    convenience init(model: NSManagedObjectModel, storeName: String, storeType: String) {
+    convenience public init(model: NSManagedObjectModel, storeName: String, storeType: String) {
         let storeCoordinator: NSPersistentStoreCoordinator = ITCoreDataOperationQueue.newPersistenceStoreCoordinator(model, storeName: storeName, storeType: storeType)
         
         let backgroundManagedObjectContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)

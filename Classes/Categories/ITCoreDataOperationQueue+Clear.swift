@@ -11,7 +11,7 @@ import CoreData
 
 extension ITCoreDataOperationQueue {
     
-    func clearAllEntities(completion:(() -> Void)?) {
+    public func clearAllEntities(completion:(() -> Void)?) {
         self.changesContext!.performBlock { () -> Void in
             let allEntities: NSArray = self.model!.entities
             allEntities.enumerateObjectsUsingBlock({ (entityDescription, idx, stop) -> Void in

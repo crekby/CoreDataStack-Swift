@@ -10,8 +10,12 @@ import UIKit
 
 extension ITCoreDataOperationQueue {
     
-    struct ITLogLevel : OptionSetType {
-        let rawValue: Int
+    public struct ITLogLevel : OptionSetType {
+        public let rawValue: Int
+        
+        public init(rawValue: Int) {
+            self.rawValue = rawValue
+        }
         
         static let None         = ITLogLevel(rawValue: 0)
         static let Messages     = ITLogLevel(rawValue: 1 << 0)
@@ -20,7 +24,7 @@ extension ITCoreDataOperationQueue {
         static let All          = ITLogLevel(rawValue: 7)
     }
     
-    func setLogLevel(logLevel: ITLogLevel) {
+    public func setLogLevel(logLevel: ITLogLevel) {
         if (logLevel != self.loggingLevel) {
             self.loggingLevel = logLevel
         }

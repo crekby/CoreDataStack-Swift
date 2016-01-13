@@ -9,14 +9,14 @@
 import UIKit
 import CoreData
 
-class ITCoreDataOperationQueue: NSObject {
+public class ITCoreDataOperationQueue: NSObject {
     
-    var model : NSManagedObjectModel? = nil
-    var readOnlyContext : NSManagedObjectContext? = nil
-    var changesContext : NSManagedObjectContext? = nil
-    var loggingLevel : ITLogLevel = .None
+    internal var model : NSManagedObjectModel? = nil
+    internal var readOnlyContext : NSManagedObjectContext? = nil
+    internal var changesContext : NSManagedObjectContext? = nil
+    internal var loggingLevel : ITLogLevel = .None
     
-    init(model: NSManagedObjectModel!, managedObjectContext: NSManagedObjectContext!, readOnlyObjectContext: NSManagedObjectContext!) {
+    public init(model: NSManagedObjectModel!, managedObjectContext: NSManagedObjectContext!, readOnlyObjectContext: NSManagedObjectContext!) {
         super.init()
         self.model = model
         self.readOnlyContext = readOnlyObjectContext
@@ -30,19 +30,19 @@ class ITCoreDataOperationQueue: NSObject {
     
     //MARK: - Class Methods
     
-    class func applicationDocumentsDirectory() -> NSURL? {
+    public class func applicationDocumentsDirectory() -> NSURL? {
         return NSURL(string: NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0])
     }
     
     //MARK: - Public
     
-    func executeMainThreadOperation(mainThreadOperation: (context: NSManagedObjectContext) -> Void) {
+    public func executeMainThreadOperation(mainThreadOperation: (context: NSManagedObjectContext) -> Void) {
         self.readOnlyContext!.performBlock { () -> Void in
             mainThreadOperation(context: self.readOnlyContext!)
         }
     }
 
-    func executeOperation(operation: (context: NSManagedObjectContext) -> Void) {
+    public func executeOperation(operation: (context: NSManagedObjectContext) -> Void) {
         self.changesContext!.performBlock { () -> Void in
             operation(context: self.changesContext!)
             do {
@@ -53,7 +53,7 @@ class ITCoreDataOperationQueue: NSObject {
         }
     }
     
-    func executeOperation(backgroundOperation: (context: NSManagedObjectContext) -> NSArray, mainThreadOperation: ((result: NSArray?) -> Void)?) {
+    public func executeOperation(backgroundOperation: (context: NSManagedObjectContext) -> NSArray, mainThreadOperation: ((result: NSArray?) -> Void)?) {
         let mainThreadOperationBlock = {(array: NSArray?) -> Void in
             if (mainThreadOperation != nil) {
                 if (NSThread.isMainThread()) {
