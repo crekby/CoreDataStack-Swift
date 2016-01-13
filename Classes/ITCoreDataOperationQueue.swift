@@ -53,7 +53,7 @@ public class ITCoreDataOperationQueue: NSObject {
         }
     }
     
-    public func executeOperation(backgroundOperation: (context: NSManagedObjectContext) -> NSArray, mainThreadOperation: ((result: NSArray?) -> Void)?) {
+    public func executeOperation(backgroundOperation: (context: NSManagedObjectContext) -> NSArray?, mainThreadOperation: ((result: NSArray?) -> Void)?) {
         let mainThreadOperationBlock = {(array: NSArray?) -> Void in
             if (mainThreadOperation != nil) {
                 if (NSThread.isMainThread()) {
