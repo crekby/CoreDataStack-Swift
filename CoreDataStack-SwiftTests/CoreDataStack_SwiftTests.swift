@@ -28,9 +28,13 @@ class CoreDataStack_SwiftTests: XCTestCase {
 
     func testThatBackroundContextReturnObjectInMainContext() {
         let expextation: XCTestExpectation = self.expectationWithDescription("Wait expectation")
-        self.databaseQueue.executeOperation({ (context) -> NSArray in
-            let object: TestEntity = NSEntityDescription.insertNewObjectForEntityForName("TestEntity", inManagedObjectContext: context) as! TestEntity
-            return [object]
+        self.databaseQueue.executeOperation({ (context) -> NSArray? in
+            let object: TestEntity? = TestEntity.insertObject(context)
+            if (object == nil) {
+                return nil
+            } else {
+                return [object!]
+            }
         }) { (result) -> Void in
             let object: TestEntity = result!.firstObject as! TestEntity;
             XCTAssertNotNil(object);
