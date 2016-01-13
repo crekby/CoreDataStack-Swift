@@ -19,8 +19,8 @@ extension ITCoreDataOperationQueue {
                 let results: NSArray
                 do {
                     results = try self.changesContext!.executeFetchRequest(request)
-                } catch {
-                    self.logError("Error fetching request: \(request)")
+                } catch let error as NSError {
+                    self.logError(error)
                     if (completion != nil) {
                         completion!()
                     }
@@ -32,8 +32,8 @@ extension ITCoreDataOperationQueue {
             })
             do {
                 try self.changesContext!.save()
-            } catch {
-                self.logError("Error saving context: \(self.changesContext)")
+            } catch let error as NSError {
+                self.logError(error)
             }
             if (completion != nil) {
                 completion!()

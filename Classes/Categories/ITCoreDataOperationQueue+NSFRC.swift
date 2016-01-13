@@ -20,8 +20,8 @@ extension ITCoreDataOperationQueue {
         
         do {
             try controller.performFetch()
-        } catch {
-            self.logError("Error fetching request: \(request)")
+        } catch let error as NSError {
+            self.logError(error)
             return nil;
         }
         return controller

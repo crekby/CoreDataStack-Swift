@@ -42,9 +42,12 @@ extension ITCoreDataOperationQueue {
         }
     }
     
-    func logError(error: String) {
+    func logError(error: NSError?) {
+        if (error == nil) {
+            return
+        }
         if (self.loggingLevel.contains(.Errors)) {
-            self.log(error)
+            self.log("\(error!)")
         }
     }
     

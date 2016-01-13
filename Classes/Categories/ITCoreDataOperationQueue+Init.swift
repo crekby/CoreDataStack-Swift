@@ -42,8 +42,8 @@ extension ITCoreDataOperationQueue {
         }
         do {
             try persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: self.storeOptions())
-        } catch {
-            print("Error adding store to coordinator: \(persistentStoreCoordinator)")
+        } catch let error as NSError {
+            print("\(error)")
         }
         return persistentStoreCoordinator
     }
@@ -61,13 +61,7 @@ extension ITCoreDataOperationQueue {
         if (!exist) {
             return false
         }
-        let metadata: NSDictionary?
-        do {
-            metadata = try NSPersistentStoreCoordinator.metadataForPersistentStoreOfType(storeType, URL: url, options: self.storeOptions())
-        } catch {
-            print("Error getting metadata for store with url: \(url)")
-            return false
-        }
+        let metadata: NSDictionary? = try? NSPersistentStoreCoordinator.metadataForPersistentStoreOfType(storeType, URL: url, options: self.storeOptions())
         
         if (metadata == nil) {
             return false

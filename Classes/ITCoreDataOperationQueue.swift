@@ -47,8 +47,8 @@ public class ITCoreDataOperationQueue: NSObject {
             operation(context: self.changesContext!)
             do {
                 try self.changesContext!.save()
-            } catch {
-                self.logError("Error saving context: \(self.changesContext)")
+            } catch let error as NSError {
+                self.logError(error)
             }
         }
     }
@@ -71,8 +71,8 @@ public class ITCoreDataOperationQueue: NSObject {
             if (context.hasChanges) {
                 do {
                     try context.save()
-                } catch {
-                    self.logError("Error saving context: \(context)")
+                } catch let error as NSError {
+                    self.logError(error)
                     mainThreadOperationBlock(nil);
                     return;
                 }
@@ -91,8 +91,8 @@ public class ITCoreDataOperationQueue: NSObject {
                     var fetchResult: NSArray? = nil
                     do {
                         fetchResult = try context.executeFetchRequest(request)
-                    } catch {
-                        self.logError("Error fetching request: \(request)")
+                    } catch let error as NSError {
+                        self.logError(error)
                     }
                     mainThreadOperationBlock(fetchResult)
                 })
@@ -119,8 +119,8 @@ public class ITCoreDataOperationQueue: NSObject {
                         var mainThreadObject: NSManagedObject? = nil
                         do {
                             mainThreadObject = try self.readOnlyContext!.existingObjectWithID((obj as! NSManagedObject).objectID)
-                        } catch {
-                            self.logError("Error fetching existing object: \(obj)")
+                        } catch let error as NSError {
+                            self.logError(error)
                         }
                         mainThreadObject!.willAccessValueForKey(nil)
                     }
