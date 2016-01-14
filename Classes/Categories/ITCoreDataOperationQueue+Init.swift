@@ -37,13 +37,13 @@ extension ITCoreDataOperationQueue {
         if (exist) {
             let compatible = ITCoreDataOperationQueue.isModelCompatible(model, url: storeURL, storeType: storeType)
             if (!compatible) {
-                print("Merge is needed")
+                print("[ITCoreDataOperationQueue]: Merge is needed")
             }
         }
         do {
             try persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: self.storeOptions())
         } catch let error as NSError {
-            print("\(error)")
+            print("[ITCoreDataOperationQueue]: Errorr adding persistence store: \(error)")
         }
         return persistentStoreCoordinator
     }
