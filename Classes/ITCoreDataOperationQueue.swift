@@ -53,7 +53,7 @@ public class ITCoreDataOperationQueue: NSObject {
         }
     }
     
-    public func executeOperation(backgroundOperation: (context: NSManagedObjectContext) -> NSArray?, mainThreadOperation: ((result: NSArray?) -> Void)?) {
+    public func executeOperation(backgroundOperation: (context: NSManagedObjectContext, completion:(result: NSArray?) -> ()) -> Void, mainThreadOperation: ((result: NSArray?) -> Void)?) {
         let mainThreadOperationBlock = {(array: NSArray?) -> Void in
             if (mainThreadOperation != nil) {
                 if (NSThread.isMainThread()) {
@@ -65,9 +65,11 @@ public class ITCoreDataOperationQueue: NSObject {
                 }
             }
         }
-        var result: NSArray?
+        var resultArray: NSArray?
         self.executeOperation { (context) -> Void in
-            result = backgroundOperation(context: context)
+            backgroundOperation(context: context, completion: {(result) -> Void in
+                resultArray = result;
+            })
             if (context.hasChanges) {
                 do {
                     try context.save()
@@ -77,14 +79,14 @@ public class ITCoreDataOperationQueue: NSObject {
                     return;
                 }
             }
-            if (result == nil) {
+            if (resultArray == nil) {
                 mainThreadOperationBlock(nil)
                 return
             }
-            if (result!.count > 0 && mainThreadOperation != nil) {
-                let objectIDs : NSArray = result!.valueForKey("objectID") as! NSArray
+            if (resultArray!.count > 0 && mainThreadOperation != nil) {
+                let objectIDs : NSArray = resultArray!.valueForKey("objectID") as! NSArray
                 self.executeMainThreadOperation({ (context) -> Void in
-                    let entity: String = (result!.firstObject as! NSManagedObject).entity.name!
+                    let entity: String = (resultArray!.firstObject as! NSManagedObject).entity.name!
                     let request: NSFetchRequest = NSFetchRequest(entityName: entity)
                     request.predicate = NSPredicate(format: "SELF IN %@", objectIDs)
                     request.includesSubentities = false
