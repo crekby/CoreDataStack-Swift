@@ -28,12 +28,12 @@ class CoreDataStack_SwiftTests: XCTestCase {
 
     func testThatBackroundContextReturnObjectInMainContext() {
         let expextation: XCTestExpectation = self.expectationWithDescription("Wait expectation")
-        self.databaseQueue.executeOperation({ (context) -> NSArray? in
+        self.databaseQueue.executeOperation({ (context, completion) -> Void in
             let object: TestEntity? = TestEntity.insertObject(context)
             if (object == nil) {
-                return nil
+                return completion(result: nil)
             } else {
-                return [object!]
+                return completion(result: [object!])
             }
         }) { (result) -> Void in
             let object: TestEntity = result!.firstObject as! TestEntity;
