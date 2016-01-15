@@ -10,9 +10,9 @@ Pod::Spec.new do |s|
 
   s.name         = "CoreDataStack"
   s.version      = "0.0.1"
-  s.summary      = "CoreDataStack concurancy realisation"
+  s.summary      = "CoreDataStack concurrency implementation"
   s.description  = <<-DESC
-                        CoreDataStack concurancy realisation
+                        CoreDataStack concurrency implementation
                    DESC
   s.homepage     = "https://github.com/crekby/CoreDataStack-Swift"
   s.license      = "MIT"
