@@ -21,7 +21,7 @@ public class ITCoreDataOperationQueue: NSObject {
         self.model = model
         self.readOnlyContext = readOnlyObjectContext
         self.changesContext = managedObjectContext
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "contextDidSave:", name: NSManagedObjectContextDidSaveNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ITCoreDataOperationQueue.contextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: nil)
     }
     
     deinit {

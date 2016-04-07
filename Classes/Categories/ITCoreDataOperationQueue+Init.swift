@@ -31,7 +31,7 @@ extension ITCoreDataOperationQueue {
         let persistentStoreCoordinator: NSPersistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel:model)
         let storeURL: NSURL = (ITCoreDataOperationQueue.applicationDocumentsDirectory()?.URLByAppendingPathComponent(storeName)
         )!
-        let error: NSErrorPointer = NSErrorPointer()
+        let error: NSErrorPointer = nil
         let exist: Bool = ITCoreDataOperationQueue.persistentStoreExists(storeURL, errorPointer: error)
         
         if (exist) {
@@ -56,7 +56,7 @@ extension ITCoreDataOperationQueue {
     }
 
     private class func isModelCompatible(model: NSManagedObjectModel, url: NSURL, storeType: String) -> Bool {
-        let error: NSErrorPointer = NSErrorPointer()
+        let error: NSErrorPointer = nil
         let exist: Bool = ITCoreDataOperationQueue.persistentStoreExists(url, errorPointer: error)
         if (!exist) {
             return false
