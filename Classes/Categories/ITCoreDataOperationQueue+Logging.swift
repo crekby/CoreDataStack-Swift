@@ -10,7 +10,7 @@ import UIKit
 
 extension ITCoreDataOperationQueue {
     
-    public struct ITLogLevel : OptionSetType {
+    public struct ITLogLevel : OptionSet {
         public let rawValue: Int
         
         public init(rawValue: Int) {
@@ -32,22 +32,20 @@ extension ITCoreDataOperationQueue {
 
     func logMessage(message: String) {
         if (self.loggingLevel.contains(.Messages)) {
-            self.log(message)
+            self.log(string: message)
         }
     }
     
     func logWarning(warning: String) {
         if (self.loggingLevel.contains(.Warnings)) {
-            self.log(warning)
+            self.log(string: warning)
         }
     }
     
     func logError(error: NSError?) {
-        if (error == nil) {
-            return
-        }
+        guard let error = error else {return}
         if (self.loggingLevel.contains(.Errors)) {
-            self.log("\(error!)")
+            self.log(string: "\(error)")
         }
     }
     

@@ -9,92 +9,106 @@
 import UIKit
 import CoreData
 
-public class ITCoreDataOperationQueue: NSObject {
+public class ITCoreDataOperationQueue {
+    
+    public class var applicationDocumentsDirectory: URL {
+        get {
+            guard let url = URL(string: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]) else {
+                fatalError("Documents directory not found")
+            }
+            return url
+        }
+    }
     
     internal var model : NSManagedObjectModel? = nil
     internal var readOnlyContext : NSManagedObjectContext? = nil
     internal var changesContext : NSManagedObjectContext? = nil
     internal var loggingLevel : ITLogLevel = .None
     
-    public init(model: NSManagedObjectModel!, managedObjectContext: NSManagedObjectContext!, readOnlyObjectContext: NSManagedObjectContext!) {
-        super.init()
+    public init(model: NSManagedObjectModel, managedObjectContext: NSManagedObjectContext, readOnlyObjectContext: NSManagedObjectContext) {
         self.model = model
         self.readOnlyContext = readOnlyObjectContext
         self.changesContext = managedObjectContext
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(ITCoreDataOperationQueue.contextDidSave(_:)), name: NSManagedObjectContextDidSaveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(contextDidSave(notification:)), name: NSNotification.Name.NSManagedObjectContextDidSave, object: nil)
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
-    }
-    
-    //MARK: - Class Methods
-    
-    public class func applicationDocumentsDirectory() -> NSURL? {
-        return NSURL(string: NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0])
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - Public
     
-    public func executeMainThreadOperation(mainThreadOperation: (context: NSManagedObjectContext) -> Void) {
-        self.readOnlyContext!.performBlock { () -> Void in
-            mainThreadOperation(context: self.readOnlyContext!)
+    public func executeMainThreadOperation(mainThreadOperation: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        guard let readOnlyContext = readOnlyContext else {
+            //TODO: error
+            return
+        }
+        readOnlyContext.perform { () -> Void in
+            mainThreadOperation(self.readOnlyContext!)
         }
     }
 
-    public func executeOperation(operation: (context: NSManagedObjectContext) -> Void) {
-        self.changesContext!.performBlock { () -> Void in
-            operation(context: self.changesContext!)
+    public func executeOperation(operation: @escaping (_ context: NSManagedObjectContext) -> Void) {
+        guard let changesContext = changesContext else {
+            //TODO: error
+            return
+        }
+        changesContext.perform { () -> Void in
+            operation(changesContext)
             do {
-                try self.changesContext!.save()
+                try changesContext.save()
             } catch let error as NSError {
-                self.logError(error)
+                self.logError(error: error)
             }
         }
     }
     
-    public func executeOperation(backgroundOperation: (context: NSManagedObjectContext, completion:(result: NSArray?) -> ()) -> Void, mainThreadOperation: ((result: NSArray?) -> Void)?) {
-        let mainThreadOperationBlock = {(array: NSArray?) -> Void in
-            if (mainThreadOperation != nil) {
-                if (NSThread.isMainThread()) {
-                    mainThreadOperation!(result: array)
-                } else {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        mainThreadOperation!(result: array)
-                    })
+    public func executeOperation<T: NSManagedObject>(backgroundOperation: @escaping (_ context: NSManagedObjectContext, _ completion:(_ result: [T]?) -> ()) -> Void, mainThreadOperation: ((_ result: [T]?) -> Void)?) {
+        let mainThreadOperationBlock = {(array: [T]?) -> Void in
+            if (Thread.isMainThread) {
+                mainThreadOperation?(array)
+            } else {
+                DispatchQueue.main.async {
+                    mainThreadOperation?(array)
                 }
             }
         }
-        var resultArray: NSArray?
+        var resultArray: [T]?
         self.executeOperation { (context) -> Void in
-            backgroundOperation(context: context, completion: {(result) -> Void in
+            backgroundOperation(context, {(result) -> Void in
                 resultArray = result;
             })
             if (context.hasChanges) {
                 do {
                     try context.save()
                 } catch let error as NSError {
-                    self.logError(error)
+                    self.logError(error: error)
                     mainThreadOperationBlock(nil);
                     return;
                 }
             }
-            if (resultArray == nil) {
+            guard let resultArray = resultArray else {
                 mainThreadOperationBlock(nil)
                 return
             }
-            if (resultArray!.count > 0 && mainThreadOperation != nil) {
-                let objectIDs : NSArray = resultArray!.valueForKey("objectID") as! NSArray
-                self.executeMainThreadOperation({ (context) -> Void in
-                    let entity: String = (resultArray!.firstObject as! NSManagedObject).entity.name!
-                    let request: NSFetchRequest = NSFetchRequest(entityName: entity)
+            if (resultArray.count > 0 && mainThreadOperation != nil) {
+                
+                let objectIDs = resultArray.map {
+                    return $0.objectID
+                }
+                self.executeMainThreadOperation(mainThreadOperation: { (context) -> Void in
+                    guard let entity = resultArray.first?.entity.name else {
+                        mainThreadOperationBlock(nil)
+                        return
+                    }
+                    let request = NSFetchRequest<T>(entityName: entity)
                     request.predicate = NSPredicate(format: "SELF IN %@", objectIDs)
                     request.includesSubentities = false
-                    var fetchResult: NSArray? = nil
+                    var fetchResult: [T]?
                     do {
-                        fetchResult = try context.executeFetchRequest(request)
+                        fetchResult = try (context.execute(request) as? NSAsynchronousFetchResult)?.finalResult
                     } catch let error as NSError {
-                        self.logError(error)
+                        self.logError(error: error)
                     }
                     mainThreadOperationBlock(fetchResult)
                 })
@@ -106,28 +120,35 @@ public class ITCoreDataOperationQueue: NSObject {
     
     //MARK: - Notifications
     
-    @objc private func contextDidSave(notification: NSNotification) {
+    dynamic func contextDidSave(notification: Notification) {
         let context : NSManagedObjectContext = notification.object! as! NSManagedObjectContext
         if (context.isEqual(self.readOnlyContext)) {
-            assert(false, "Saving read only context is not allowed, use background context")
+            fatalError("Saving read only context is not allowed, use background context")
         } else if (context.isEqual(self.changesContext)) {
-            self.readOnlyContext!.performBlock({ () -> Void in
-                if (self.readOnlyContext!.hasChanges) {
-                    self.readOnlyContext!.rollback()
-                }
-                let updated: NSArray? = (notification.userInfo! as NSDictionary).valueForKey(NSUpdatedObjectsKey) as? NSArray
-                if (updated != nil) {
-                    for (obj) in updated! {
+            guard let readOnlyContext = readOnlyContext else {
+                fatalError("Read only context in nil")
+            }
+            readOnlyContext.perform({ () -> Void in
+                
+                if let updated = notification.userInfo?[NSUpdatedObjectsKey] as? [NSManagedObject] {
+                    for (obj) in updated {
                         var mainThreadObject: NSManagedObject? = nil
                         do {
-                            mainThreadObject = try self.readOnlyContext!.existingObjectWithID((obj as! NSManagedObject).objectID)
+                            mainThreadObject = try readOnlyContext.existingObject(with: obj.objectID)
                         } catch let error as NSError {
-                            self.logError(error)
+                            self.logError(error: error)
                         }
-                        mainThreadObject!.willAccessValueForKey(nil)
+                        mainThreadObject?.willAccessValue(forKey: nil)
                     }
                 }
-                self.readOnlyContext!.mergeChangesFromContextDidSaveNotification(notification)
+                readOnlyContext.mergeChanges(fromContextDidSave: notification)
+                if !readOnlyContext.deletedObjects.isEmpty {
+                    do {
+                        try readOnlyContext.save()
+                    } catch let error as NSError {
+                        self.logError(error: error)
+                    }
+                }
             })
         }
     }
