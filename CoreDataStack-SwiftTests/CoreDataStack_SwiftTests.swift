@@ -8,6 +8,7 @@
 
 import XCTest
 import CoreData
+
 @testable import CoreDataStack
 
 class CoreDataStack_SwiftTests: XCTestCase {
@@ -17,8 +18,8 @@ class CoreDataStack_SwiftTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let storeName: String = NSStringFromSelector(self.invocation!.selector)
-        let modelURL = NSBundle(forClass: CoreDataStack_SwiftTests.self).URLForResource("TestModel", withExtension: "momd")
-        self.databaseQueue = ITCoreDataOperationQueue(model: NSManagedObjectModel(contentsOfURL: modelURL!)!, storeName: storeName, storeType: NSInMemoryStoreType)
+        let modelURL = Bundle(for: CoreDataStack_SwiftTests.self).url(forResource: "TestModel", withExtension: "momd")
+        self.databaseQueue = ITCoreDataOperationQueue(model: NSManagedObjectModel(contentsOf: modelURL!)!, storeName: storeName, storeType: NSInMemoryStoreType)
     }
     
     override func tearDown() {
@@ -27,20 +28,21 @@ class CoreDataStack_SwiftTests: XCTestCase {
     
 
     func testThatBackroundContextReturnObjectInMainContext() {
-        let expextation: XCTestExpectation = self.expectationWithDescription("Wait expectation")
-        self.databaseQueue.executeOperation({ (context, completion) -> Void in
-            let object: TestEntity? = TestEntity.insertObject(context)
+        let expextation = self.expectation(description: "Wait expectation")
+    
+        self.databaseQueue.executeOperation(backgroundOperation: { (context, completion) -> Void in
+            let object: TestEntity? = TestEntity.insertObject(context: context)
             if (object == nil) {
-                return completion(result: nil)
+                return completion(nil)
             } else {
-                return completion(result: [object!])
+                return completion([object!])
             }
         }) { (result) -> Void in
-            let object: TestEntity = result!.firstObject as! TestEntity;
+            let object: TestEntity = result!.first as! TestEntity;
             XCTAssertNotNil(object);
-            XCTAssert(object.managedObjectContext!.concurrencyType == .MainQueueConcurrencyType, "returned object is not in main context");
+            XCTAssert(object.managedObjectContext!.concurrencyType == .mainQueueConcurrencyType, "returned object is not in main context");
             expextation.fulfill()
         }
-        self.waitForExpectationsWithTimeout(5, handler: nil)
+        self.waitForExpectations(timeout: 5, handler: nil)
     }
 }

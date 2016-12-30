@@ -12,32 +12,37 @@ import CoreData
 extension ITCoreDataOperationQueue {
     
     public func clearAllEntities(completion:(() -> Void)?) {
-        self.changesContext!.performBlock { () -> Void in
-            let allEntities: NSArray = self.model!.entities
-            allEntities.enumerateObjectsUsingBlock({ (entityDescription, idx, stop) -> Void in
-                let request: NSFetchRequest = NSFetchRequest(entityName: entityDescription.name)
-                let results: NSArray
+        guard let model = model else {
+            fatalError("Model is nil")
+        }
+        guard let changesContext = changesContext else {
+            return
+        }
+        changesContext.perform { () -> Void in
+            let allEntities = model.entities
+            for entityDescription in allEntities {
+                guard let name = entityDescription.name else {
+                    continue
+                }
+                let request: NSFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: name)
+                let results: [NSManagedObject]?
                 do {
-                    results = try self.changesContext!.executeFetchRequest(request)
+                    results = try (changesContext.execute(request) as? NSAsynchronousFetchResult)?.finalResult
                 } catch let error as NSError {
-                    self.logError(error)
-                    if (completion != nil) {
-                        completion!()
-                    }
+                    self.logError(error: error)
+                    completion?()
                     return
                 }
-                for (object) in results {
+                for object in results ?? [] {
                     self.changesContext!.delete(object)
                 }
-            })
+            }
             do {
-                try self.changesContext!.save()
+                try changesContext.save()
             } catch let error as NSError {
-                self.logError(error)
+                self.logError(error: error)
             }
-            if (completion != nil) {
-                completion!()
-            }
+            completion?()
         }
     }
 

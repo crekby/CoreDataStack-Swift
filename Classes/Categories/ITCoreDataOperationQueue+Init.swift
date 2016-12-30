@@ -12,14 +12,14 @@ import CoreData
 extension ITCoreDataOperationQueue {
     
     convenience public init(model: NSManagedObjectModel, storeName: String, storeType: String) {
-        let storeCoordinator: NSPersistentStoreCoordinator = ITCoreDataOperationQueue.newPersistenceStoreCoordinator(model, storeName: storeName, storeType: storeType)
+        let storeCoordinator: NSPersistentStoreCoordinator = ITCoreDataOperationQueue.newPersistenceStoreCoordinator(model: model, storeName: storeName, storeType: storeType)
         
-        let backgroundManagedObjectContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
+        let backgroundManagedObjectContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .privateQueueConcurrencyType)
         backgroundManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         backgroundManagedObjectContext.persistentStoreCoordinator = storeCoordinator
         backgroundManagedObjectContext.name = "ITDatabaseManager.BackgroundQueue"
         
-        let mainManagedObjectContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        let mainManagedObjectContext: NSManagedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         mainManagedObjectContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
         mainManagedObjectContext.persistentStoreCoordinator = storeCoordinator
         mainManagedObjectContext.name = "ITDatabaseManager.MainQueue"
@@ -29,19 +29,16 @@ extension ITCoreDataOperationQueue {
     
     private class func newPersistenceStoreCoordinator(model: NSManagedObjectModel, storeName: String, storeType: String) -> NSPersistentStoreCoordinator {
         let persistentStoreCoordinator: NSPersistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel:model)
-        let storeURL: NSURL = (ITCoreDataOperationQueue.applicationDocumentsDirectory()?.URLByAppendingPathComponent(storeName)
-        )!
-        let error: NSErrorPointer = nil
-        let exist: Bool = ITCoreDataOperationQueue.persistentStoreExists(storeURL, errorPointer: error)
-        
-        if (exist) {
-            let compatible = ITCoreDataOperationQueue.isModelCompatible(model, url: storeURL, storeType: storeType)
-            if (!compatible) {
-                print("[ITCoreDataOperationQueue]: Merge is needed")
-            }
-        }
+        let storeURL = ITCoreDataOperationQueue.applicationDocumentsDirectory.appendingPathComponent(storeName)
         do {
-            try persistentStoreCoordinator.addPersistentStoreWithType(storeType, configuration: nil, URL: storeURL, options: self.storeOptions())
+            let exist = (try? ITCoreDataOperationQueue.persistentStoreExists(url: storeURL)) ?? false
+            if (exist == false) {
+                if (!ITCoreDataOperationQueue.isModelCompatible(model: model, url: storeURL, storeType: storeType)) {
+                    print("[ITCoreDataOperationQueue]: Merge is needed")
+                }
+            }
+        
+            try persistentStoreCoordinator.addPersistentStore(ofType: storeType, configurationName: nil, at: storeURL, options: self.storeOptions())
         } catch let error as NSError {
             print("[ITCoreDataOperationQueue]: Errorr adding persistence store: \(error)")
         }
@@ -50,28 +47,24 @@ extension ITCoreDataOperationQueue {
 
     //MARK: - Helpers
     
-    private class func persistentStoreExists(url: NSURL, errorPointer: NSErrorPointer) -> Bool {
-        let resourceIsReachable: Bool = url.checkResourceIsReachableAndReturnError(errorPointer)
-        return resourceIsReachable
+    private class func persistentStoreExists(url: URL) throws -> Bool {
+        return try url.checkResourceIsReachable()
     }
 
-    private class func isModelCompatible(model: NSManagedObjectModel, url: NSURL, storeType: String) -> Bool {
-        let error: NSErrorPointer = nil
-        let exist: Bool = ITCoreDataOperationQueue.persistentStoreExists(url, errorPointer: error)
+    private class func isModelCompatible(model: NSManagedObjectModel, url: URL, storeType: String) -> Bool {
+        let exist: Bool = (try? ITCoreDataOperationQueue.persistentStoreExists(url: url)) ?? false
         if (!exist) {
             return false
         }
-        let metadata: NSDictionary? = try? NSPersistentStoreCoordinator.metadataForPersistentStoreOfType(storeType, URL: url, options: self.storeOptions())
-        
-        if (metadata == nil) {
+        guard let metadata = try? NSPersistentStoreCoordinator.metadataForPersistentStore(ofType: storeType, at: url, options: self.storeOptions()) else {
             return false
         }
         
-        let compatible: Bool = model.isConfiguration(nil, compatibleWithStoreMetadata: metadata! as! [String : AnyObject])
+        let compatible: Bool = model.isConfiguration(withName: nil, compatibleWithStoreMetadata: metadata)
         return compatible
     }
     
-    private class func storeOptions() -> [NSObject : AnyObject] {
+    private class func storeOptions() -> [String : Any] {
         return [NSMigratePersistentStoresAutomaticallyOption : true, NSInferMappingModelAutomaticallyOption : true]
     }
 
