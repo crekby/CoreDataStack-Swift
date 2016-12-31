@@ -6,11 +6,11 @@
 //  Copyright © 2016 Aliaksandr Skulin. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 extension ITCoreDataOperationQueue {
     
+    @available(OSX 10.12, *)
     @available(iOS 3.0, *)
     public func newController<T: NSFetchRequestResult>(request: NSFetchRequest<T>, keyPath: String?, delegate: NSFetchedResultsControllerDelegate? = nil) -> NSFetchedResultsController<T>? {
         assert(request.sortDescriptors!.count > 0, "NSFetchedResultController requres sort descriptors.")
@@ -31,6 +31,7 @@ extension ITCoreDataOperationQueue {
         return controller
     }
 
+    @available(OSX 10.12, *)
     @available(iOS 3.0, *)
     public func newController<T: NSFetchRequestResult>(request: NSFetchRequest<T>, delegate: NSFetchedResultsControllerDelegate? = nil) -> NSFetchedResultsController<T>? {
         return self.newController(request: request, keyPath: nil, delegate: delegate)

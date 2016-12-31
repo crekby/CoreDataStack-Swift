@@ -6,7 +6,6 @@
 //  Copyright © 2016 Aliaksandr Skulin. All rights reserved.
 //
 
-import UIKit
 import CoreData
 
 public class ITCoreDataOperationQueue {
