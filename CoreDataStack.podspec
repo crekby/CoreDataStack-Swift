@@ -17,10 +17,12 @@ Pod::Spec.new do |s|
   s.homepage     = "https://github.com/crekby/CoreDataStack-Swift"
   s.license      = "MIT"
   s.author       = { "Aliaksandr Skulin" => "aliaksandr.skulin@instinctools.ru" }
-  s.platform     = :ios, "8.0"
   s.source       = { :git => "https://github.com/crekby/CoreDataStack-Swift.git", :tag => s.version.to_s }
   s.source_files  = "Classes/**/*.{swift}", "CoreDataStack.h"
   s.framework  = "CoreData"
+
+  s.ios.deployment_target = '8.0'
+  s.osx.deployment_target = '10.10'
 
 
 end

@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1530A3BF1E17F34D0076596A /* ITCoreDataOperationQueue+Clear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132201C44FD9D0056E4DB /* ITCoreDataOperationQueue+Clear.swift */; };
+		1530A3C01E17F34F0076596A /* ITCoreDataOperationQueue+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132221C4500E40056E4DB /* ITCoreDataOperationQueue+Init.swift */; };
+		1530A3C11E17F3520076596A /* ITCoreDataOperationQueue+NSFRC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132241C4516440056E4DB /* ITCoreDataOperationQueue+NSFRC.swift */; };
+		1530A3C21E17F3540076596A /* ITCoreDataOperationQueue+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132281C451A890056E4DB /* ITCoreDataOperationQueue+Logging.swift */; };
+		1530A3C31E17F3570076596A /* NSManagedObject+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB132261C45193D0056E4DB /* NSManagedObject+Additions.swift */; };
+		1530A3C41E17F35A0076596A /* ITCoreDataOperationQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB1321D1C44E9E50056E4DB /* ITCoreDataOperationQueue.swift */; };
+		15751B2C1E1713DF00C01682 /* CoreDataStackOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 15751B2A1E1713DF00C01682 /* CoreDataStackOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3FB131E71C44E8760056E4DB /* CoreDataStack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */; };
 		3FB131EC1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FB131EB1C44E8760056E4DB /* CoreDataStack_SwiftTests.swift */; };
 		3FB131F81C44E8F40056E4DB /* CoreDataStack-Swift.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FB131F71C44E8F40056E4DB /* CoreDataStack-Swift.h */; };
@@ -32,6 +39,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15751B281E1713DF00C01682 /* CoreDataStackOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreDataStackOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		15751B2A1E1713DF00C01682 /* CoreDataStackOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CoreDataStackOSX.h; sourceTree = "<group>"; };
+		15751B2B1E1713DF00C01682 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CoreDataStack.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FB131E11C44E8760056E4DB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3FB131E61C44E8760056E4DB /* CoreDataStack-SwiftTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "CoreDataStack-SwiftTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -50,6 +60,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		15751B241E1713DF00C01682 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FB131D81C44E8760056E4DB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -68,11 +85,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15751B291E1713DF00C01682 /* CoreDataStackOSX */ = {
+			isa = PBXGroup;
+			children = (
+				15751B2A1E1713DF00C01682 /* CoreDataStackOSX.h */,
+				15751B2B1E1713DF00C01682 /* Info.plist */,
+			);
+			path = CoreDataStackOSX;
+			sourceTree = "<group>";
+		};
 		3FB131D21C44E8760056E4DB = {
 			isa = PBXGroup;
 			children = (
 				3FB131DE1C44E8760056E4DB /* CoreDataStack-Swift */,
 				3FB131EA1C44E8760056E4DB /* CoreDataStack-SwiftTests */,
+				15751B291E1713DF00C01682 /* CoreDataStackOSX */,
 				3FB131DD1C44E8760056E4DB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -82,6 +109,7 @@
 			children = (
 				3FB131DC1C44E8760056E4DB /* CoreDataStack.framework */,
 				3FB131E61C44E8760056E4DB /* CoreDataStack-SwiftTests.xctest */,
+				15751B281E1713DF00C01682 /* CoreDataStackOSX.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,6 +168,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		15751B251E1713DF00C01682 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				15751B2C1E1713DF00C01682 /* CoreDataStackOSX.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FB131D91C44E8760056E4DB /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -151,6 +187,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		15751B271E1713DF00C01682 /* CoreDataStackOSX */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 15751B2F1E1713DF00C01682 /* Build configuration list for PBXNativeTarget "CoreDataStackOSX" */;
+			buildPhases = (
+				15751B231E1713DF00C01682 /* Sources */,
+				15751B241E1713DF00C01682 /* Frameworks */,
+				15751B251E1713DF00C01682 /* Headers */,
+				15751B261E1713DF00C01682 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CoreDataStackOSX;
+			productName = CoreDataStackOSX;
+			productReference = 15751B281E1713DF00C01682 /* CoreDataStackOSX.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		3FB131DB1C44E8760056E4DB /* CoreDataStack */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3FB131F01C44E8760056E4DB /* Build configuration list for PBXNativeTarget "CoreDataStack" */;
@@ -197,6 +251,10 @@
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Aliaksandr Skulin";
 				TargetAttributes = {
+					15751B271E1713DF00C01682 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Manual;
+					};
 					3FB131DB1C44E8760056E4DB = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -219,11 +277,19 @@
 			targets = (
 				3FB131DB1C44E8760056E4DB /* CoreDataStack */,
 				3FB131E51C44E8760056E4DB /* CoreDataStack-SwiftTests */,
+				15751B271E1713DF00C01682 /* CoreDataStackOSX */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		15751B261E1713DF00C01682 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FB131DA1C44E8760056E4DB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -241,6 +307,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		15751B231E1713DF00C01682 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1530A3BF1E17F34D0076596A /* ITCoreDataOperationQueue+Clear.swift in Sources */,
+				1530A3C21E17F3540076596A /* ITCoreDataOperationQueue+Logging.swift in Sources */,
+				1530A3C31E17F3570076596A /* NSManagedObject+Additions.swift in Sources */,
+				1530A3C41E17F35A0076596A /* ITCoreDataOperationQueue.swift in Sources */,
+				1530A3C11E17F3520076596A /* ITCoreDataOperationQueue+NSFRC.swift in Sources */,
+				1530A3C01E17F34F0076596A /* ITCoreDataOperationQueue+Init.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		3FB131D71C44E8760056E4DB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -276,6 +355,57 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		15751B2D1E1713DF00C01682 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = CoreDataStackOSX/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = by.crekby.CoreDataStackOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		15751B2E1E1713DF00C01682 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = "";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_VERSION = A;
+				INFOPLIST_FILE = CoreDataStackOSX/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_BUNDLE_IDENTIFIER = by.crekby.CoreDataStackOSX;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
 		3FB131EE1C44E8760056E4DB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -434,6 +564,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		15751B2F1E1713DF00C01682 /* Build configuration list for PBXNativeTarget "CoreDataStackOSX" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				15751B2D1E1713DF00C01682 /* Debug */,
+				15751B2E1E1713DF00C01682 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		3FB131D61C44E8760056E4DB /* Build configuration list for PBXProject "CoreDataStack-Swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
