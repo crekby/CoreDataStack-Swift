@@ -8,8 +8,18 @@
 
 import CoreData
 
+/**
+ ITCoreDataOperationQueue class for managing core data operations for 2 NSManagedObjectContexts, one is for main thread, and other is for background.
+ You only allowed to make changes to your data in background context.
+ Main context is only for fetching data and use it for UI related manipulation.
+ Both contexts have same persistence store coordinator.
+ And after saving changes in background context, they are merged to main context.
+ */
 public class ITCoreDataOperationQueue {
     
+    /**
+     URL to Documents directory in application sandbox.
+     */
     public class var applicationDocumentsDirectory: URL {
         get {
             guard let url = URL(string: NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0]) else {
@@ -24,6 +34,14 @@ public class ITCoreDataOperationQueue {
     internal var changesContext : NSManagedObjectContext? = nil
     internal var loggingLevel : ITLogLevel = .None
     
+    
+    /**
+     Returns initialised database operations queue with given contexts and model. If you don't want to initialise contexts by yourself, you can use method initWithModel:storeName:storeType: declared in Init category
+     - parameters:
+         - model: core data model
+         - managedObjectContext: context with allowed changes
+         - readOnlyObjectContext: context only for read only operations
+     */
     public init(model: NSManagedObjectModel, managedObjectContext: NSManagedObjectContext, readOnlyObjectContext: NSManagedObjectContext) {
         self.model = model
         self.readOnlyContext = readOnlyObjectContext
@@ -37,9 +55,14 @@ public class ITCoreDataOperationQueue {
     
     //MARK: - Public
     
+    /**
+     Executes given block in read only context.
+     - warning: DO NOT USE READ ONLY CONTEXT FOR CHANGES, USE IT ONLY FOR FETCHING.
+     - parameters:
+         - backgroundOperation: Block for execution.
+     */
     public func executeMainThreadOperation(mainThreadOperation: @escaping (_ context: NSManagedObjectContext) -> Void) {
         guard let readOnlyContext = readOnlyContext else {
-            //TODO: error
             return
         }
         readOnlyContext.perform { () -> Void in
@@ -47,9 +70,14 @@ public class ITCoreDataOperationQueue {
         }
     }
 
+    /**
+     Executes given block in background.
+     - warning: USE BACKGROUND CONTEXT FOR MAKING CHANGES IN YOUR MODEL, NOT MAIN CONTEXT.
+     - parameters:
+         - operation: Block for execution.
+     */
     public func executeOperation(operation: @escaping (_ context: NSManagedObjectContext) -> Void) {
         guard let changesContext = changesContext else {
-            //TODO: error
             return
         }
         changesContext.perform { () -> Void in
@@ -62,6 +90,12 @@ public class ITCoreDataOperationQueue {
         }
     }
     
+    /**
+     Executes given blocks in background and in read only contexts respectively. Background block should return fetched data or nil.
+     - parameters:
+         - backgroundOperation: Block for background context execution, use it to fetching and changing your data. return your results from this block.
+         - mainThreadOperation: Block for mainThread context execution, result from backgroun operation sending to this block from main context.
+     */
     public func executeOperation<T: NSManagedObject>(backgroundOperation: @escaping (_ context: NSManagedObjectContext, _ completion:(_ result: [T]?) -> ()) -> Void, mainThreadOperation: ((_ result: [T]?) -> Void)?) {
         let mainThreadOperationBlock = {(array: [T]?) -> Void in
             if (Thread.isMainThread) {
@@ -119,7 +153,7 @@ public class ITCoreDataOperationQueue {
     
     //MARK: - Notifications
     
-    dynamic func contextDidSave(notification: Notification) {
+    dynamic fileprivate func contextDidSave(notification: Notification) {
         let context : NSManagedObjectContext = notification.object! as! NSManagedObjectContext
         if (context.isEqual(self.readOnlyContext)) {
             fatalError("Saving read only context is not allowed, use background context")
@@ -130,7 +164,7 @@ public class ITCoreDataOperationQueue {
             readOnlyContext.perform({ () -> Void in
                 
                 if let updated = notification.userInfo?[NSUpdatedObjectsKey] as? [NSManagedObject] {
-                    for (obj) in updated {
+                    for obj in updated {
                         var mainThreadObject: NSManagedObject? = nil
                         do {
                             mainThreadObject = try readOnlyContext.existingObject(with: obj.objectID)

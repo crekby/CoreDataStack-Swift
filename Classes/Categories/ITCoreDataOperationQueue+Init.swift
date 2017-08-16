@@ -10,6 +10,13 @@ import CoreData
 
 extension ITCoreDataOperationQueue {
     
+    /**
+     Init new database operations queue instance with given parametrs.
+     - parameters:
+         - model: Model object.
+         - storeURL: URL path for saving database.
+         - storeType: Store type (NSSQLiteStoreType, NSBinaryStoreType, NSInMemoryStoreType).
+     */
     convenience public init(model: NSManagedObjectModel, storeURL: URL, storeType: String) {
         let storeCoordinator: NSPersistentStoreCoordinator = ITCoreDataOperationQueue.newPersistenceStoreCoordinator(model: model, storeURL: storeURL, storeType: storeType)
         
@@ -26,12 +33,21 @@ extension ITCoreDataOperationQueue {
         self.init(model: model, managedObjectContext: backgroundManagedObjectContext, readOnlyObjectContext: mainManagedObjectContext)
     }
     
+    /**
+     Init new database operations queue instance with given parametrs.
+     - parameters:
+         - model: Model object.
+         - storeName: Name for store on file system.
+         - storeType: Store type (NSSQLiteStoreType, NSBinaryStoreType, NSInMemoryStoreType).
+     */
     convenience public init(model: NSManagedObjectModel, storeName: String, storeType: String) {
         let storeURL = URL(fileURLWithPath: ITCoreDataOperationQueue.applicationDocumentsDirectory.appendingPathComponent(storeName).path)
         self.init(model: model, storeURL: storeURL, storeType: storeType)
     }
     
-    private class func newPersistenceStoreCoordinator(model: NSManagedObjectModel, storeURL: URL, storeType: String) -> NSPersistentStoreCoordinator {
+    //MARK: - Private
+    
+    fileprivate class func newPersistenceStoreCoordinator(model: NSManagedObjectModel, storeURL: URL, storeType: String) -> NSPersistentStoreCoordinator {
         let persistentStoreCoordinator: NSPersistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel:model)
         
         do {
@@ -49,13 +65,11 @@ extension ITCoreDataOperationQueue {
         return persistentStoreCoordinator
     }
     
-    //MARK: - Helpers
-    
-    private class func persistentStoreExists(url: URL) throws -> Bool {
+    fileprivate class func persistentStoreExists(url: URL) throws -> Bool {
         return try url.checkResourceIsReachable()
     }
     
-    private class func isModelCompatible(model: NSManagedObjectModel, url: URL, storeType: String) -> Bool {
+    fileprivate class func isModelCompatible(model: NSManagedObjectModel, url: URL, storeType: String) -> Bool {
         let exist: Bool = (try? ITCoreDataOperationQueue.persistentStoreExists(url: url)) ?? false
         if (!exist) {
             return false
@@ -68,7 +82,7 @@ extension ITCoreDataOperationQueue {
         return compatible
     }
     
-    private class func storeOptions() -> [String : Any] {
+    fileprivate class func storeOptions() -> [String : Any] {
         return [NSMigratePersistentStoresAutomaticallyOption : true, NSInferMappingModelAutomaticallyOption : true]
     }
     

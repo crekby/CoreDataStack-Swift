@@ -10,6 +10,13 @@ import CoreData
 
 extension ITCoreDataOperationQueue {
     
+    /**
+     Returns fetch result controller with given properties. Executes in main context.
+     - parameters: 
+         - request: The fetch request used to get the objects..
+         - keyPath: A key path on result objects that returns the section name. Pass nil to indicate that the controller should generate a single section.
+         - delegate: delegate for fetch result controller.
+     */
     @available(OSX 10.12, *)
     @available(iOS 3.0, *)
     public func newController<T: NSFetchRequestResult>(request: NSFetchRequest<T>, keyPath: String?, delegate: NSFetchedResultsControllerDelegate? = nil) -> NSFetchedResultsController<T>? {
@@ -31,6 +38,12 @@ extension ITCoreDataOperationQueue {
         return controller
     }
 
+    /**
+     Returns fetch result controller with given properties. Executes in main context.
+     - parameters:
+         - request: The fetch request used to get the objects..
+         - delegate: delegate for fetch result controller.
+     */
     @available(OSX 10.12, *)
     @available(iOS 3.0, *)
     public func newController<T: NSFetchRequestResult>(request: NSFetchRequest<T>, delegate: NSFetchedResultsControllerDelegate? = nil) -> NSFetchedResultsController<T>? {

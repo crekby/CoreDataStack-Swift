@@ -10,6 +10,9 @@ import CoreData
 
 extension ITCoreDataOperationQueue {
     
+    /**
+     Clear All entities from database in background context.
+     */
     public func clearAllEntities(completion:(() -> Void)?) {
         guard let model = model else {
             fatalError("Model is nil")
